@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,
+        p {
+            margin: 0;
+        }
+        
+        h2 {
+            margin: 0;
+            font-size: 100%;
+        }
+        
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .box {
+            width: 572px;
+            border: 1px solid #999;
+            overflow: hidden;
+        }
+        
+        .nav {
+            margin-left: -1px;
+            font: 14px "微软雅黑";
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+        
+        .navI {
+            float: left;
+            width: 33.333%;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        .navI-tit {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-sizing: border-box;
+            line-height: 40px;
+            height: 40px;
+            text-align: center;
+            cursor: pointer;
+            border-left: 1px solid #cecece;
+            border-bottom: 1px solid #cecece;
+        }
+        
+        .navI-txt {
+            width: 572px;
+            height: 200px;
+            margin-top: 40px;
+            text-indent: 2em;
+            line-height: 2;
+            background: #fff;
+        }
+        
+        .ml1 {
+            margin-left: -100%;
+        }
+        
+        .ml2 {
+            margin-left: -200%;
+        }
+        
+        .navI_active {
+            z-index: 1;
+        }
+        /*重点代码*/
+        
+        .navI-txt:target {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .navI-txt:target~.navI-tit {
+            background: #fff;
+            border-bottom: none;
+        }
+    </style>
+
+    <body>
+        <!-- 
+            ，我们要解决的问题是如何接收点击事件，这里第一种方法我们采用 :target 伪类接收。
+
+            :target 是 CSS3 新增的一个伪类，可用于选取当前活动的目标元素。当然 URL 末尾带有锚名称 #，就可以指向文档内某个具体的元素。
+            这个被链接的元素就是目标元素(target element)。它需要一个 id 去匹配文档中的 target 。
+            
+            使用语义布局时，可以使用伪类target，通过target选择器来改变点击导航标题时，当前标题的样式。
+            不仅如此，因为要使用兄弟选择器，所以需要改变HTML结构，将导航标题的HTML结构移到导航内容的下面
+
+            点击导航标题时，触发target伪类，改变对应的导航内容的层级z-index，
+            从而使当前导航内容在三个导航内容中胜出，在最上层显示；与此同时，改变当前导航标题的样式 -->
+        <div class="box">
+            <ul class="nav">
+                <li class="navI navI_active">
+                    <p class="navI-txt" id="kc">课程内容</p>
+                    <a class="navI-tit" href="#kc">课程</a>
+                </li>
+                <li class="navI">
+                    <p class="navI-txt ml1" id="xx">学习计划内容</p>
+                    <a class="navI-tit" href="#xx">学习计划</a>
+                </li>
+                <li class="navI">
+                    <p class="navI-txt ml2" id="jn">技能图谱内容</p>
+                    <a class="navI-tit" href="#jn">技能图谱</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+
+
+
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Function.prototype.MyBind = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        const fn = this;
+        function fBound(...agrs2) {
+          return fn.call(
+            this instanceof fBound ? this : context,
+            //判断fBound是否出现在左边这个对象的原型链上(new 构造的时候忽略了传入的上下文对象，把this指向生成实例) 如果是new，this指向的是新的实例，新的实例的原型链肯定有它的构造函数fBound阿，那么就传入this，也就是实例本身，而忽略context，其他参数不变。
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        //构造函数原型上的属性，实例也可以访问
+        return fBound;
+      };
+      Function.prototype.MyBind = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        const fn = this;
+        function fBound(...args2) {
+          return fn.call(
+            this instanceof fBound ? this : context,
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+      Function.prototype.MyBind = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        const fn = this;
+        function fBound(...args2) {
+          return fBound.call(
+            this instanceof fBound ? this : context,
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+    </script>
+  </body>
+</html>

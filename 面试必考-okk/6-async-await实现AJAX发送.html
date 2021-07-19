@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <>
+    关于AJAX的一些基本知识 XMLHttpRequest对象用于和服务器交换数据。
+    1、发送请求到服务器：open() send() -----------------------------------
+    open()规定请求的类型、URL及是否异步操作 open(method,url,async)
+    method:请求的类型；GET或POST url：文件在服务器上的位置
+    async:true(异步)，false(同步) -----------------------------------
+    send(string) 将请求发送到服务器 string：仅用于POST请求
+    ------------------------------------- 补充：GET和POST
+    与POST相比，GET更快也更简单，并且能在大部分情况下使用。
+    需要用到POST请求的情况 --------------------
+    无法使用缓存文件（更新服务器上的文件或数据库） 
+    向服务器发送大量数据（POST没有数据量限制） 
+    发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
+
+    -------------------------------------
+    2、XMLHttpRequest.readyState 属性返回一个 XMLHttpRequest  代理当前所处的状态。
+    0: 请求未初始化
+    1: 服务器连接已建立
+    2: 请求已接收
+    3: 请求处理中
+    4: 请求已完成，且响应已就绪
+    -------------------------------------
+    3、onreadystatechange
+    当readystate改变时，会触发onreadystatechange事件
+
+    -------------------------------------
+    -------------------------------------
+    async函数
+    
+  </body>
+</html>

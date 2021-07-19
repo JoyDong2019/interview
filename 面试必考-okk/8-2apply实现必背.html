@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Function.prototype.myapply = function (context, args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (arguments.length > 2) {
+          throw new TypeError("Incorrect arguments length");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let result = context.fn(...args);
+        delete context.fn;
+        return result;
+      };
+      function MyApply(context, args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (arguments.length > 2) {
+          throw new TypeError("Incorrect array length");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        delete context.fn;
+        return res;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //call实现
+      Function.prototype.MyCall = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        //把this(及fun)设置为context的一个属性，this就会指向context
+        let result = context.fn(...args);
+        delete context.fn;
+        return result;
+      };
+      function MyCall(context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        delete context.fn;
+        return res;
+      }
+    </script>
+  </body>
+</html>

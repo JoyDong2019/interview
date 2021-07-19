@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //防抖
+      function debounce(fun, delay) {
+        let timer = null;
+        return function (...args) {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fun.apply(this, args);
+            //这个this是返回的新函数调用时的this，需要让新函数的this和原函数一致
+            // 如果原函数本来挂载在某对象上，新生成的函数也需要挂载到那对象上，因为 debounce 内部的 fn.call(this) 时，这个 this 是指返回的新函数调用时的 this。所以，需要让新函数的 this 和原函数是一致的，才会是期望的正常行为。
+          }, delay);
+        };
+      }
+      //节流
+      function throttle(fun, delay) {
+        let flag = true;
+        return function () {
+          if (!flag) {
+            return;
+          }
+          flag = false;
+          setTimeout(() => {
+            fun.apply(this, arguments);
+            flag = true;
+          }, delay);
+        };
+      }
+    </script>
+  </body>
+</html>

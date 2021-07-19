@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //Promiseall()
+      function PromiseAll(iterators) {
+        let arr = Array.from(iterators);
+        return new Promise((resolve, reject) => {
+          let len = arr.length;
+          let resolvedCount = 0;
+          let resolvedarr = new Array(len);
+          arr.forEach((promise, index) => {
+            Promise.resolve(promise, index).then(
+              (val) => {
+                resolvedCount++;
+                resolvedarr[index] = val;
+                if (resolvedCount === len) {
+                  resolve(resolvedarr);
+                }
+              },
+              (err) => {
+                reject(err);
+              }
+            );
+          });
+        });
+      }
+      //PromiseAny()
+      function PromiseAny(iterators) {
+        let arr = Array.from(iterators);
+        return new Promise((resolve, reject) => {
+          let len = arr.length;
+          let rejectedCount = 0;
+          let rejectedarr = new Array(len);
+          arr.forEach((promise, index) => {
+            Promise.resolve(promise).then(
+              (val) => {
+                resolve(val);
+              },
+              (err) => {
+                rejectedCount++;
+                rejectedarr[index] = err;
+                if (rejectedCount === len) {
+                  reject(rejectedarr);
+                }
+              }
+            );
+          });
+        });
+      }
+      //bind()
+      Function.prototype.MyBind = function (context, args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        let fn = this;
+        function fBound(args2) {
+          fBound.call(
+            this instanceof fBound ? this : context,
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+      function instanceOf(left, right) {
+        let proto = left.__proto__;
+        let prototype = right.prototype;
+        while (true) {
+          if (proto == null) {
+            return false;
+          } else if (proto == prototype) {
+            return true;
+          }
+          proto = proto.__proto__;
+        }
+      }
+    </script>
+  </body>
+</html>

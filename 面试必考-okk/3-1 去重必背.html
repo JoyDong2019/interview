@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //1 利用Set去重
+      let array = [1, 2, 3, 4, 6, 23, 4, 2, 1];
+      let res1 = [...new Set(array)];
+      console.log(res1);
+      // let res2 = Array.from(new Set(array));
+
+      //2 indexOf
+      let s2 = [];
+      for (let i in array) {
+        if (res2.indexOf(array[i]) < 0) {
+          res2.push(array[i]);
+        }
+      }
+      console.log(res2);
+
+      //3 Array.includes()
+      let res3 = [];
+      for (let i in array) {
+        if (!res3.includes(array[i])) {
+          res3.push(array[i]);
+        }
+      }
+      console.log(res3);
+
+      //4 filter
+      let res4 = array.filter((value, index, array) => {
+        array.indexOf(value) == index;
+      });
+
+      // -----------------------------------------
+      //
+      //Set;
+      let res1 = [];
+      res1 = [...new Set(array)];
+
+      //indexOf()
+      let res2 = [];
+      for (let i in array) {
+        if (res2.indexOf(array[i]) < 0) {
+          res2.push(array[i]);
+        }
+      }
+      //array.includes()
+      let res3 = [];
+      for (let i in array) {
+        if (!res3.includes(array[i])) {
+          res3.push(array[i]);
+        }
+      }
+      //filter
+      let res4 = array.filter(
+        (value, index, array) => array.indexOf(value) == index
+      );
+    </script>
+  </body>
+</html>

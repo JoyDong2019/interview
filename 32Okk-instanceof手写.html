@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      //  instanceof 主要的实现原理就是只要右边变量的 prototype 在左边变量的原型链上即可
+      // instanceof 在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，
+      // 如果查找失败，则会返回 false，告诉我们左边变量并非是右边变量的实例。
+      function instanceOf_(left, right) {
+        let proto = left.__proto__;
+        let prototype = right.prototype;
+        while (true) {
+          if (proto === null) return false;
+          if (proto === prototype) return true;
+          proto = proto.__proto__;
+          //没找到继续向上一层原型链查找
+        }
+      }
+
+      function myInstanceOf(left, right) {
+        let proto = left.__proto__;
+        let prototype = right.prototype;
+        while (true) {
+          if (proto == null) return false;
+          if (proto == prototype) return true;
+          proto = proto.__proto__;
+        }
+      }
+
+      function Person(name) {
+        this.name = name;
+      }
+
+      var david = new Person("david");
+      console.log(instanceOf_(david, Person));
+    </script>
+  </body>
+</html>

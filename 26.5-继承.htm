@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Animal(name) {
+        this.name = name;
+        this.sleep = function () {
+          console.log("sleeping~");
+        };
+      }
+      Animal.prototype.eat = function (food) {
+        console.log("eating");
+      };
+      //1 原型类继承
+      function Cat() {}
+      Cat.prototype = new Animal();
+    </script>
+  </body>
+</html>

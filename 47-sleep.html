@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* function sleep(ms) {
+        return new Promise((resolve) => {
+          console.log(111);
+          setTimeout(resolve, ms);
+        });
+      }
+      sleep(500).then(function () {
+        console.log(222);
+      }); */
+      // 回调地狱
+      /* A();
+      function A() {
+        console.log(111);
+        B();
+      }
+      function B() {
+        console.log(222);
+        C();
+      }
+      function C() {
+        console.log(333);
+      }
+      // ---------------------
+      p.then().then().then();
+      var p = new Promise((resolve, reject) => {
+        console.log(111);
+        console.log(222);
+        resolve(333);
+      });
+      p.then((value) => {
+        console.log("then中的函数" + value);
+        return new Promise((resolve, reject) => {
+          resolve(444);
+        });
+      })
+        .then((value) => {})
+        .catch((err) => {
+          console.log(err);
+        }); */
+      //async封装
+      /* function sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+      async function test() {
+        return await sellp(1000);
+        console.log(1111);
+      } */
+      //generate
+      function* sleep(ms) {
+        yield new Promise(function (resolve, reject) {
+          console.log(111);
+          setTimeout(resolve, ms);
+        });
+      }
+      sleep(500)
+        .next()
+        .value.then(function () {
+          console.log(2222);
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Animal(name) {
+        this.name = name || "Animal";
+      }
+      Animal.prototype.bark = function () {
+        console.log("miao~");
+      };
+      function Cat(name) {
+        Animal.call(this, name);
+        //构造函数继承，使用call或apply的方法，将父对象的构造函数绑定在子对象上
+        //先创建子类的对象this，将父类的方法添加到this上面
+      }
+      Cat.prototype = new Animal();
+      //原型链继承 如果"猫"的prototype对象，指向一个Animal的实例，那么所有"猫"的实例，就能继承Animal了。
+      Cat.prototype.constructor = Cat;
+      //如果没有这一行 Cat.prototype.constructor指向Animal
+      //每一个实例也有constructor属性，默认调用prototype对象的constructor属性，Cat实例对象的constructor也指向了Animal。这会导致继承链的紊乱
+      function inheritPrototype(cat, animal) {
+        let tempProto = Object.create(animal.prototype);
+        temProto.constructor = cat;
+        cat.prototype = tempProto;
+      }
+
+      function Animal(name) {
+        this.name = name || "animal";
+      }
+      Function.prototype.bark = function () {
+        console.log("miao");
+      };
+      function Cat(name) {
+        Animal.call(this, name);
+      }
+      Cat.prototype = new Animal();
+      Cat.prototype.constructor = Cat;
+      function inheritPrototype(cat, animal) {
+        let tempproto = Object.create(animal.prototype);
+        cat.prototype = tempproto;
+        tempproto.constructor = cat;
+      }
+    </script>
+  </body>
+</html>

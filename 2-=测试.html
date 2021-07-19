@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let data = []
+        let BE_table = [{
+            valName: 'x',
+            val: [1, 3, 5]
+        }, {
+            valName: 'y',
+            val: [1, 4, 5]
+        }, {
+            valName: 'z',
+            val: [1, 3, 7]
+        }, ]
+        BE_table.forEach((item, index) => {
+            let valName = item.valName;
+            let valArray = item.val.map((nowval) =>
+                parseFloat(nowval).toFixed(2)
+            );
+            let result = {}
+            let k = ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7']
+
+            for (let i in valArray) {
+                result[k[i]] = valArray[i]
+            }
+            let r = {}
+            Object.assign(r, {
+                key: 1
+            })
+            Object.assign(r, {
+                name: valName
+            })
+
+
+            Object.assign(r, result)
+            data.push(r)
+        });
+        console.log(data);
+        // 1 == 强制转换成Number比较
+        console.log(' ' == '0'); // F
+        console.log(' ' == 0); // T
+        console.log(null == undefined); // T
+        // 2 Funtion的原型 也是Function
+        console.log(Function);
+        console.log(Object.getPrototypeOf(Function));
+        // 3  测试是否为数组
+        arr = [1]
+        console.log(Object.prototype.toString.call(arr)); // [object Array]
+        console.log(Array.isArray(arr)); // true
+        console.log(arr instanceof Array); // true
+    </script>
+</body>
+
+</html>

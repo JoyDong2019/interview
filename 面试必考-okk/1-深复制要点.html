@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //浅拷贝和深拷贝
+      /* 1、数据类型分为基本数据类型和引用数据类型，对于基本数据类型，它的值直接储存在栈内存中，对于引用类型来说，它在栈内存中只存储了引用，真正的数据存储在堆内存中。
+      2、浅拷贝只拷贝对象的引用，而不深层次拷贝对象的值。多个对象指向堆内存中的同一个对象，任何一个修改都会使所有对象的值被修改。深拷贝：对拷贝后的数据进行修改不会影响原数据的一种拷贝方式。深拷贝作用在引用数据类型上。*/
+
+      // 实现深拷贝的方式
+
+      // 第一种方法 JSON.stringify()及JSON.parse()
+      var obj1 = {
+        a: 1,
+        b: 2,
+        c: 3,
+      };
+      var objString = JSON.stringify(obj1);
+      var obj2 = JSON.parse(objString);
+      obj2.a = 5;
+      console.log(obj1.a); //1
+      console.log(obj2.a); //5
+      //JSON.stringify(obj)将一个JS对象或值转换为一个JSON字符串
+      //JSON.parse(string)解析JSON字符串，构造由字符串描述的JS值或对象
+      //JSON.stringify()及JSON.parse()不可以拷贝undefined, function, RegExp等等类型
+
+      //第二种方法 Object.assign(target,source)
+      var obj1 = {
+        a: 1,
+        b: 2,
+        c: 3,
+      };
+      var obj2 = Object.assign({}, obj1);
+      obj2.b = 5;
+      console.log(obj1.b); //2
+      console.log(obj2.b); //5
+      //Object.assign()将多个可枚举属性的值从一个或多个源对象分配到目标对象
+      //Object.assign(target,...sources)
+      //只适用于一层对象，对于多层嵌套还是只拷贝了引用
+
+      //第三种方法 递归方法
+
+      //第一种递归代码
+      // 定义一个深拷贝函数  接收目标target参数
+      function deepClone(target) {
+        // 定义一个变量
+        let result;
+        // 如果当前需要深拷贝的是一个对象的话
+        if (typeof target === "object") {
+          // 如果是一个数组的话
+          if (Array.isArray(target)) {
+            result = []; // 将result赋值为一个数组，并且执行遍历
+            for (let i in target) {
+              //for...in语句以任意顺序遍历一个对象的除了symbol以外的可枚举属性
+              // 递归克隆数组中的每一项
+              result.push(deepClone(target[i]));
+            }
+            // 判断如果当前的值是null的话；直接赋值为null
+          } else if (target === null) {
+            result = null;
+            // 判断如果当前的值是一个RegExp对象的话，直接赋值
+          } else if (target.constructor === RegExp) {
+            result = target;
+          } else {
+            // 否则是普通对象，直接for in循环，递归赋值对象的所有值
+            result = {};
+            for (let i in target) {
+              result[i] = deepClone(target[i]);
+            }
+          }
+          // 如果不是对象的话，就是基本数据类型，那么直接赋值
+        } else {
+          result = target;
+        }
+        // 返回最终结果
+        return result;
+      }
+
+      //第二种递归代码
+      function deepClone(obj) {
+        let objClone = Array.isArray(obj) ? [] : {};
+        if (obj && typeof obj === "object") {
+          for (key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              //判断ojb子元素是否为对象，如果是，递归复制
+              if (obj[key] && typeof obj[key] === "object") {
+                objClone[key] = deepClone(obj[key]);
+              } else {
+                //如果不是，简单复制
+                objClone[key] = obj[key];
+              }
+            }
+          }
+        }
+        return objClone;
+      }
+    </script>
+  </body>
+</html>

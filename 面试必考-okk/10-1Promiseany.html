@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    补充：Array.from()
+    Array.from()方法从一个类似数组或者可迭代对象创建一个新的，浅拷贝的数组实例。
+    Array.from(arrayLike[,mapFn][,thisArg])
+    arrayLike:想要转换成数组的伪数组对象或可迭代对象。
+    <br />mapFn:可选 如果指定了参数，该数组中的每个元素都会执行该回调函数
+    thisArg:可选参数，执行回调函数mapFn时this对象。
+    <br />返回值：一个新的数组实例 -------------------------------------
+    Array.from() 可以通过以下方式来创建数组对象： 伪数组对象（拥有一个 length
+    属性和若干索引属性的任意对象） 可迭代对象（可以获取对象中的元素,如 Map和 Set
+    等） Array.from() 方法有一个可选参数
+    mapFn，让你可以在最后生成的数组上再执行一次 map 方法后再返回。也就是说
+    Array.from(obj, mapFn, thisArg) 就相当于 Array.from(obj).map(mapFn,
+    thisArg), 除非创建的不是可用的中间数组。 这对一些数组的子类,如 typed arrays
+    来说很重要, 因为中间数组的值在调用 map() 时需要是适当的类型。
+    ------------------------------------- Array.prototype.forEach()
+    forEach()方法对数组的每个元素执行一次给定的函数。
+    arr.forEach(callback(currentValue [, index [, array]])[, thisArg]) callback
+    为数组中每个元素执行的函数，该函数接收一至三个参数：
+    -------------------------------------currentValue 数组中正在处理的当前元素。
+    -------------------------------------index 可选
+    数组中正在处理的当前元素的索引。 -------------------------------------array
+    可选 forEach() 方法正在操作的数组。 -------------------------------------
+    thisArg 可选 可选参数。当执行回调函数 callback 时，用作 this 的值。
+    <script>
+      function PromiseAny(iterators) {
+        const promises = Array.from(iterators);
+        const num = promises.length;
+        const rejectedList = new Array(num);
+        let rejectedNum = 0;
+        return new Promise((resolve, reject) => {
+          promises.forEach((promise, index) => {
+            Promise.resolve(promise).then(
+              (val) => {
+                resolve(val);
+              },
+              (err) => {
+                rejectedNum++;
+                rejectedList[index] = err;
+                if (rejectedNum == len) {
+                  reject(rejectedList);
+                }
+              }
+            );
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

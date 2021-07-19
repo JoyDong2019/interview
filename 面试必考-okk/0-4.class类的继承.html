@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    1、简介 Class可以通过extends关键字实现继承。
+    ES5的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6的继承机制完全不同，实质是先将父类实例对象的属性和方法，加到this上面（所以必须先调用super方法），然后再用子类的构造函数修改this。
+    <script>
+      class point {}
+      class ColorPoint extends Point {} //通过extends关键字，继承了Point类的所有属性和方法
+      class ColorPoint extends Point {
+        constructor(x, y, color) {
+          super(x, y); // 调用父类的constructor(x, y)
+          //子类必须在constructor方法中调用super方法，因为子类自己的this对象必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用super方法，子类就得不到this对象。
+          //在子类的构造函数中，只有调用了super之后，才可以使用this关键字，否则会报错。
+          this.color = color;
+        }
+
+        toString() {
+          return this.color + " " + super.toString(); // 调用父类的toString()
+        }
+      }
+      class A {
+        static hello() {
+          console.log("hello world");
+        }
+      }
+
+      class B extends A {}
+      B.hello(); // hello world
+      //父类的静态方法 也会被子类继承
+      //Object.getPrototypeOf()  方法可以用来从子类上获取父类
+      //Obj.hasPropertyOf() 检测一个对象是否含有自身特定的属性
+      Object.getPrototypeOf(ColorPoint) === Point;
+      //利用这个方法可以判断，一个类是否继承了另一个类
+    </script>
+    super关键字
+    1、super作为函数调用，代表父类的构造函数,但返回的是子类的实例。子类的构造函数必须执行一次super函数。super()只能用在子类的构造函数中。
+    <script>
+      class A {}
+      class B extends A {
+        constructor() {
+          super(); //代表父类A的构造函数，但返回的是子类B的实例。
+          //super内部的this指的是B的实例。
+          //super()相当于 A.prototype.constructor.call(this)
+        }
+      }
+    </script>
+    2、super作为对象时，在普通方法中，指向父类的原型对象，方法内部的this指向当前的子类实例
+    <script>
+      class A {
+        p() {
+          return 2;
+        }
+      }
+      class B extends A {
+        constructor() {
+          super();
+          console.log(super.p()); // 2
+          //指向父类的原型对象：A.prototype 所以super.p()相当于A.prototype.p()
+        }
+      }
+      let b = new B();
+      //由于super指向父类的原型对象，所以定义在父类实例上的方法或属性，是无法通过super调用的。
+    </script>
+    <script>
+      class A {
+        constructor() {
+          this.x = 1;
+        }
+        print() {
+          console.log(this.x);
+        }
+      }
+      class B extends A {
+        constructor() {
+          super();
+          this.x = 2;
+        }
+        m() {
+          super.print();
+        }
+      }
+      let b = new B();
+      b.m(); // 2
+      //super.print()虽然调用的是A.prototype.print()，但是A.prototype.print()内部的this指向子类B的实例，导致输出的是2，而不是1。也就是说，实际上执行的是super.print.call(this)。
+      //由于this指向子类实例，所以如果通过super对某个属性赋值，这时super就是this，赋值的属性会变成子类实例的属性。
+    </script>
+    3、super()作为对象时，在静态方法中，指向父类，this指向当前的子类。
+    <script>
+      class Parent {
+        static myMethod(msg) {
+          console.log("static", msg);
+        }
+        myMethod(msg) {
+          console.log("instance", msg);
+        }
+      }
+      class Child extends Parent {
+        static myMethod(msg) {
+          super.myMethod(msg);
+        }
+        myMethod(msg) {
+          super.myMethod(msg);
+        }
+      }
+      Child.myMethod(1); // static 1
+      //静态方法只能通过类来调用
+      var child = new Child();
+      child.myMethod(2); // instance 2
+      //静态方法不能通过实例来继承
+    </script>
+    ----------------------------------------------------------------------------------------
+    4、类的prototype属性和__proto__属性
+    (1)子类的__proto__属性，表示构造函数的继承，总是指向父类。
+    (2)子类prototype属性的__proto__属性，表示方法的继承，总是指向父类的prototype属性。
+  </body>
+</html>

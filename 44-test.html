@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: cadetblue;
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div>哈哈</div>
+    <script>
+        // document.write(" i am your boy") 可以在页面输出结果
+        var a = 'aa'
+
+        function fn1() {
+            // var a = 'bb' // 不会修改原值
+            a = 'bb' // 这里引用的是全局变量。会修改
+            return a
+        }
+        fn1() // bb  
+            // document.write(a)
+        var obj = {
+            name: 'shenzehshu'
+        }
+        if (obj.age) {
+            console.log('存在属性age');
+        } else {
+            document.write("不存在属性")
+        }
+        var newobj = {}
+        if (newobj) {
+            document.write('空对象也是true')
+        } else {
+            document.write("空对象是false")
+        }
+    </script>
+</body>
+
+</html>

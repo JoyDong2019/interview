@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        import Vue from 'vue';
+        import Toast from '@/components/Toast'; //引入组件
+        let ToastConstructor = Vue.extend(Toast) // 返回一个“扩展实例构造器”
+
+        let myToast = (text, duration) => {
+            let toastDom = new ToastConstructor({
+                el: document.createElement('div') //将toast组件挂载到新创建的div上
+            })
+            document.body.appendChild(toastDom.$el) //把toast组件的dom添加到body里
+
+            toastDom.text = text;
+            toastDom.duration = duration;
+
+            // 在指定 duration 之后让 toast消失
+            setTimeout(() => {
+                toastDom.isShow = false;
+            }, toastDom.duration);
+        }
+        export default myToast;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //深复制
+      function deepClone(target) {
+        let res;
+        if (typeof target === "object") {
+          if (Array.isArray(target)) {
+            let res = [];
+            for (let i in target) {
+              res.push(deepClone(target[i]));
+            }
+          } else if (target === null) {
+            res = null;
+          } else if (target.constructor === RegExp) {
+            res = target;
+          } else {
+            res = {};
+            for (let i in target) {
+              res[i] = deepClone(target[i]);
+            }
+          }
+        } else {
+          res = target;
+        }
+        return res;
+      }
+      function deepClone(target) {
+        let res = Array.isArray(target) ? [] : {};
+        if (target && typeof target === "object") {
+          for (key in target) {
+            if (target.hasOwnProperty(key)) {
+              if (target[key] && typeof target[key] === "object") {
+                res[key] = deepClone(target[key]);
+              } else {
+                res[key] = target[key];
+              }
+            }
+          }
+        }
+        return res;
+      }
+      //防抖
+      function debounce(fun, delay) {
+        let timer = null;
+        return function (...args) {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fun.apply(this, args);
+          }, delay);
+        };
+      }
+      //节流
+      function throttle(fun, delay) {
+        let flag = true;
+        return function () {
+          if (!flag) {
+            return;
+          }
+          flag = false;
+          setTimeout(() => {
+            fun.apply(this, arguments);
+            flag = true;
+          }, delay);
+        };
+      }
+      //去重
+      //Set
+      let arr = [1, 2, 3, 2, 1];
+      let res1 = [...new Set(arr)];
+      //arr.indexOf()
+      let res2 = [];
+      for (let i in arr) {
+        if (res2.indexOf(arr[i]) < 0) {
+          res2.push(arr[i]);
+        }
+      }
+      //arr.includes()
+      let res3 = [];
+      for (let i in arr) {
+        if (!res3.includes(arr[i])) {
+          res3.push(arr[i]);
+        }
+      }
+      //arr.filter
+      let res4 = arr.filter((value, index, arr) => {
+        arr.indexOf(value) == index;
+      });
+      //Promise实现
+      class MyPromise {
+        constructor(callback) {
+          this.status = "pending";
+          this.msg = "";
+          callback(this.resolve.bind(this), this.reject.bind(this));
+          return this;
+        }
+        resolve(val) {
+          this.status = "fulfilled";
+          this.msg = val;
+        }
+        reject(err) {
+          this.status = "rejected";
+          this.msg = err;
+        }
+        then(fulfilled, rejected) {
+          if (this.status === "fulfilled") {
+            fulfilled(this.msg);
+          } else if (this.status === "rejected") {
+            rejected(this.msg);
+          }
+        }
+      }
+      let p = new MyPromise((resolve, reject) => {
+        resolve("ok");
+      });
+      p.then(
+        (val) => {
+          console.log(val);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      //Async-await实现AJAX发送
+      function sendAJAX(url) {
+        return new Promise((resolve, reject) => {
+          let xhr = new XMLHttpRequest();
+          xhr.open("get", url, true);
+          xhr, send();
+          xhr.onreadystatechange()= function(){
+            if(xhr.readystate===4){
+              if((xhr.status>=200&&xhr.status<300)||xhr.status===304){
+                resolve(xhr.responseText)
+              }else{
+                reject(xhr.status)
+              }
+            }
+          }
+        });
+      }
+      async function main(){
+        let res=await sendAJAX("...")
+        console.log(res);
+      }
+      main()
+    </script>
+  </body>
+</html>

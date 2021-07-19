@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function deepClone(target) {
+        let res;
+        if (typeof target === "object") {
+          if (Array.isArray(target)) {
+            res = [];
+            for (let i in target) {
+              res.push(deepClone(target[i]));
+            }
+          } else if (target === null) {
+            res = null;
+          } else if (target.constructor === RegExp) {
+            res = target;
+          } else {
+            res = {};
+            for (let i in target) {
+              res[i] = deepClone(target[i]);
+            }
+          }
+        } else {
+          res = target;
+        }
+        return res;
+      }
+      function deepClone(target) {
+        let res = Array.isArray ? [] : {};
+        if (target && typeof target === "object") {
+          for (key in target) {
+            if (target.hasOwnProperty(key)) {
+              if (target[key] && typeof target[key] === "object") {
+                res[key] = deepClone(target[key]);
+              } else {
+                res[key] = target[key];
+              }
+            }
+          }
+        }
+        return res;
+      }
+      //防抖节流
+      function debounce(fun, delay) {
+        let timer = null;
+        return function (...args) {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fun.apply(this, args);
+          }, delay);
+        };
+      }
+      function throttle(fun, delay) {
+        let flag = true;
+        return function () {
+          if (!flag) {
+            return;
+          }
+          flag = false;
+          setTimeout(() => {
+            fun.apply(this, arguments);
+            flag = true;
+          }, delay);
+        };
+      }
+      //去重
+      let arr = [1, 2, 3, 2, 1];
+      //Set
+      let res1 = [...new Set(arr)];
+      //indexOf
+      let res2 = [];
+      for (let i in arr) {
+        if (indexOf(arr[i]) < 0) {
+          res2.push(arr[i]);
+        }
+      }
+      //arr.includes()
+      let res3 = [];
+      for (let i in arr) {
+        if (!res3.includes(arr[i])) {
+          res3.push(arr[i]);
+        }
+      }
+      //filter
+      //不改变原数组 返回过滤之后的新数组
+      let res4 = arr.filter((index, value, arr) => {
+        arr.indexOf(value) == index;
+        //测试
+        //包含所提供函数实现测试的所有元素
+      });
+      //Promise实现
+      class MyPromise {
+        constructor(callback) {
+          this.status = "pending";
+          this.msg = "";
+          callback(this.resolve.bind(this), this.reject.bind(this));
+          return this;
+        }
+        resolve(val) {
+          this.status = "fulfilled";
+          this.msg = val;
+        }
+        reject(err) {
+          this.status = "rejected";
+          this.msg = err;
+        }
+        then(fulfilled, rejected) {
+          if (this.status === "fulfilled") {
+            fulfilled(this.msg);
+          } else if (this.status === "rejected") {
+            rejected(this.msg);
+          }
+        }
+      }
+      let p = new MyPromise((resolve, reject) => {
+        resolve("ok");
+      });
+      p.then(
+        (val) => {
+          console.log(val);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      function sendAJAX(url) {
+        return new Promise((reslove, reject) => {
+          let xhr = new XMLHttpRequest();
+          xhr.open("get", url, true);
+          xhr.send();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              if (
+                (xhr.status >= 200 && xhr.status < 300) ||
+                xhr.status === 304
+              ) {
+                resolve(xhr.responseText);
+              }
+            } else {
+              reject(xhr.status);
+            }
+          };
+        });
+      }
+      async function main() {
+        let res = await sendAJAX("...");
+        console.log(res);
+      }
+      main();
+      //promiseall
+      function PromiseAll(arr) {
+        return new Promise((resolve, reject) => {
+          if (!Array.isArray(arr)) {
+            throw new TypeError("not arr");
+          }
+          let length = arr.length;
+          let resolvedcount = 0;
+          let resolvedarray = new Array(length);
+          for (let i = 0; i < length; i++) {
+            Promise.resolve(arr[i]).then(
+              (val) => {
+                resolvedcount++;
+                resolvedarray[i] = val;
+                if (resolvedcount == length) {
+                  return resolve(resolvedarray);
+                }
+              },
+              (err) => {
+                return reject(err);
+              }
+            );
+          }
+        });
+      }
+
+      function MyCall(context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        delete context.fn;
+        return res;
+      }
+      function MyApply(context, args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (context == NULL || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        delete context.fn;
+        return res;
+      }
+      Function.prototype.MyBind = function (...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        let fn = this;
+        function fBound(...args2) {
+          return fBound.call(
+            this instanceof fBound ? this : context,
+            args,
+            args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+      class MyPromise {
+        constructor(callback) {
+          this.status = "pending";
+          this.msg = "";
+          callback(this.resolve.bind(this), this.reject.bind(this));
+        }
+        resolve(val) {
+          this.status = "fulfilled";
+          this.msg = val;
+        }
+        reject(err) {
+          this.status = "rejected";
+          this.msg = err;
+        }
+        then(fulfilled, rejected) {
+          if (this.status === "fulfilled") {
+            fulfilled(this.msg);
+          } else if (this.status === "rejected") {
+            rejected(this.msg);
+          }
+        }
+      }
+      let p = new MyPromise((resolve, reject) => {
+        resolve("ok");
+      });
+      p.then(
+        (val) => {
+          console.log(val);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      //防抖
+      function debounce(fun, delay) {
+        let timer = null;
+        return function (...args) {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fun.apply(this, args);
+          }, delay);
+        };
+      }
+      //节流
+      function throttle(fun, delay) {
+        let flag = true;
+        return function () {
+          if (!flag) {
+            return;
+          }
+          flag = false;
+          setTimeout(() => {
+            fun.apply(this, arguments);
+            flag = true;
+          }, delay);
+        };
+      }
+      //Promiseall
+      function Promiseall(arr) {
+        if (!Array.isArray(arr)) {
+          throw new TypeError("not function");
+        }
+        return new Promise((resolve, reject) => {
+          let len = arr.length;
+          let resolvedCount = 0;
+          let resolvedarr = new Array(len);
+          for (let i = 0; i < len; i++) {
+            Promise.resolve(arr[i]).then(
+              (val) => {
+                resolvedCount++;
+                resolvedarr[i] = val;
+                if (resolvedCount == len) {
+                  return resolve(resolvedarr[i]);
+                }
+              },
+              (err) => {
+                return reject(err);
+              }
+            );
+          }
+        });
+      }
+      //sendAJAX
+      function sendAJAax(url) {
+        return new Promise((resolve, reject) => {
+          const xml = new XMLHttpRequest();
+          xml.open("get", url, true);
+          xml.send();
+          xml.onreadystatechange = function () {
+            if (xml.readyState === 4) {
+              if (
+                (xml.status >= 200 && xml.status < 300) ||
+                xml.status == 304
+              ) {
+                resolve(xml.responseText);
+              } else {
+                reject(xml.status);
+              }
+            }
+          };
+        });
+      }
+      async function main() {
+        let res = await sendAJAX("...");
+        console.log(res);
+      }
+      main();
+      //call
+      function MyCall(context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        delete context.fn;
+        return res;
+      }
+      //apply
+      function MyApply(context, args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        if (arguments.length > 2) {
+          throw new TypeError("Incorrect arguments legth");
+        }
+        if (context == null || context == undefined) {
+          context = window;
+        } else {
+          context = Object(context);
+        }
+        context.fn = this;
+        let res = context.fn(...args);
+        return res;
+      }
+      Function.prototype.MyBind = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        const fn = this;
+        function fBound(...args2) {
+          return fn.call(
+            this instanceof fBound ? this : context,
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+      function instanceOf(left, right) {
+        let proto = left.__proto__;
+        let prototype = right.prototype;
+        while (true) {
+          if (proto == null) {
+            return false;
+          } else if (proto == prototype) {
+            return true;
+          }
+          proto = proto.__proto__;
+        }
+      }
+      Function.prototype.MyBind = function (context, ...args) {
+        if (typeof this !== "function") {
+          throw new TypeError("not function");
+        }
+        const fn = this;
+        function fBound(...args2) {
+          return fn.call(
+            this instanceof fBound ? this : context,
+            ...args,
+            ...args2
+          );
+        }
+        fBound.prototype = Object.create(this.prototype);
+        return fBound;
+      };
+      //去重
+      let arr = [1, 2, 3, 2, 1];
+      let res4 = arr.filter((index, value, arr) => {
+        arr.indexOf(value) == index;
+      });
+    </script>
+  </body>
+</html>

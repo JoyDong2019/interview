@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 防抖和节流的作用都是防止函数多次调用
+      // 区别在于，假设一个用户一直触发这个函数，且每次触发函数的间隔小于wait，防抖的情况下只会调用一次，而节流的 情况会每隔一定时间（参数wait）调用函数。
+
+      // 防抖
+      //以参数形式接受原函数，并返回一个经过防抖处理的新函数，后续涉及到需要防抖处理的，都需要用新函数来替代原函数
+      function debounce(fun, delay) {
+        //定时器变量
+        let timer = null;
+        return function (...args) {
+          //每次触发时先清除定时器
+          if (timer) {
+            clearTimeout(timer);
+            //移除还处于延迟中的任务
+          }
+          timer = setTimeout(() => {
+            fun.apply(this, args);
+            //这个this是返回的新函数调用时的this，需要让新函数的this和原函数一致
+          }, delay);
+        };
+      }
+      // 节流
+      function throttle(fun, delay) {
+        let canRun = true;
+        return function () {
+          if (!canRun) return;
+          canRun = false;
+          setTimeout(() => {
+            fun.apply(this, arguments);
+            canRun = true;
+          }, delay);
+        };
+      }
+
+      function throttle(fn, delay, atleast) {
+        //函数绑定在 scroll 事件上，当页面滚动时，避免函数被高频触发，
+        var timeout = null, //进行去抖处理
+          startTime = new Date();
+        return function () {
+          var curTime = new Date();
+          clearTimeout(timeout);
+          if (curTime - startTime >= atleast) {
+            fn();
+            startTime = curTime;
+          } else {
+            timeout = setTimeout(fn, delay);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

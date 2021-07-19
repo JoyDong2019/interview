@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .con {
+            position: relative;
+            width: 100%;
+            /* 这里高度有效必须设置html 和body告诉100% */
+            height: 100%;
+        }
+        
+        .left {
+            /* 左右定位 */
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: pink;
+        }
+        
+        .right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: cadetblue;
+        }
+        
+        .center {
+            /* 中间自适应 */
+            position: absolute;
+            left: 200px;
+            right: 200px;
+            top: 0;
+            background-color: green;
+            height: 100%;
+            /* 不要忘了margin */
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="con">
+        <div class="left">left</div>
+        <div class="center">center</div>
+        <div class="right">right</div>
+    </div>
+</body>
+
+</html>

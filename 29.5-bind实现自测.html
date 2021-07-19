@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Function.prototype.call = function(context) {
+            if (typeof this !== 'function') throw new TypeError('not function')
+            let args = [...arguments].slice(1)
+            let result = null
+            context = context || window
+            context.fn = this
+            result = context.fn(...args)
+            delete context.fn
+            return result
+        }
+        Function.prototype.apply = function(context) {
+            if (typeof this !== 'function') throw new TypeError("not function")
+            let result = null
+            context = context || window
+            context.fn = this
+            if (arguments[1]) {
+                result = context.fn(...arguments[1])
+            } else {
+                result = context.fn()
+            }
+            delete context.fn
+            return result
+        }
+        Function.prototype.bind = function(context) {
+            if (typeof this !== 'function') throw new TypeError("not function")
+            let args = [...arguments].slice(1)
+            let fn = this
+            let fBound = function() {
+                return fn.apply(this instanceof fBound ? this : context, args.concat(...arguments))
+            }
+            fBound.prototype = Object.create(this.prototype)
+            return fBound
+        }
+
+
+
+        Function.prototype.call = function(context) {
+            if (typeof this !== 'function') throw new TypeError("this is not a function")
+            let result = null
+            let args = [...arguments].slice(1)
+            context = context || window
+            context.fn = this
+            let result = context.fn(...args)
+            delete context.fn
+            return result
+
+        }
+        Function.prototype.apply = function(context) {
+            if (typeof this !== 'function') throw new TypeError("this is not a function")
+            let result = null
+            context = context || window
+            context.fn = this
+            if (arguments[1]) {
+                result = context.fn(...arguments[1])
+            } else {
+                result = context.fn()
+            }
+            delete context.fn
+            return result
+        }
+        Function.prototype.bind = function(context) {
+            if (typeof this !== 'function') throw new TypeError("not a function")
+            let args = [...arguments].slice(1)
+            let fn = this
+            let fbound = function() {
+                return fn.apply(this instanceof fbound ? this : context, args.concat(...arguments))
+            }
+            fbound.prototype = Object.create(this.prototype)
+            return fbound
+
+        }
+    </script>
+</body>
+
+</html>

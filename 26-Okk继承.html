@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      function Animal(name) {
+        this.name = name || "Animal";
+      }
+      Animal.prototype.bark = function () {
+        console.log("miao~");
+      };
+
+      function Cat(name) {
+        Animal.call(this, name); // ---------需要传参数进入！！
+        //第一次调用父类构造函数
+      }
+      Cat.prototype = new Animal(); //第二次调用父类构造函数
+      //这一次又在新对象上创建了实例属性 name  。于是，这两个属性就屏蔽了原型中的同名属性
+      Cat.prototype.constructor = Cat;
+      // 组合继承 组合继承（构造函数和原型的组合）会调用两次父类构造函数的代码
+      // 结果是,有两组name和friends属性,一组在SubType的实例上,一组在SubType的原型上.
+      // 寄生组合
+      //引入寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的方式来继承方法，
+      // 而不需要为子类指定原型而调用父类的构造函数，我们需要拿到的仅仅是父类原型的一个副本。
+      // 因此可以通过传入子类和父类的构造函数作为参数，首先创建父类原型的一个复本，并为其添加constrcutor，
+      // 最后赋给子类的原型。这样避免了调用两次父类的构造函数，为其创建多余的属性。
+      function inheritPrototype(subType, superType) {
+        var prototype = Object.create(superType.prototype); //创建对象  创建一个父类原型的副本
+        prototype.constructor = subType; //增强对象 将这个副本指向子对象
+        subType.prototype = prototype; //指定对象 指定子对象原型为这个副本
+      }
+      inheritPrototype(Cat, Animal);
+      var cat = new Cat("小黑猫");
+      console.log(cat);
+      console.log(cat.name);
+      cat.bark();
+
+      function inheritPrototype(cat, animal) {
+        let tempProto = Object.create(animal.prototype);
+        tempProto.constructor = cat;
+        cat.prototype = tempProto;
+      }
+
+      function inheritProto(cat, animal) {
+        let proto = Object.create(animal.prototype);
+        proto.constructor = cat;
+        cat.prototype = proto;
+      }
+    </script>
+  </body>
+</html>

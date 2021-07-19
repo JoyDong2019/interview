@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 自定义一个Promise类
+      class PromiseMy {
+        constructor(callback) {
+          this.status = "pending";
+          this.msg = "";
+          callback(this.resolve.bind(this), this.reject.bind(this));
+          return this;
+        }
+        resolve(val) {
+          this.status = "fulfilled";
+          this.msg = val;
+        }
+        reject(err) {
+          this.status = "rejected";
+          this.msg = err;
+        }
+        then(fulfilled, rejected) {
+          // 这里两个形参传入的都是函数！
+          if (this.status === "fulfilled") {
+            fulfilled(this.msg);
+          } else if (this.status === "rejected") {
+            rejected(this.msg);
+          }
+        }
+      }
+      let p = new PromiseMy((resolve, reject) => {
+        resolve("ok");
+      });
+      p.then(
+        (val) => {
+          console.log(val);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    </script>
+  </body>
+</html>
