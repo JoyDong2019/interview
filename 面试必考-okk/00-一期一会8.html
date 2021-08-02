@@ -75,13 +75,13 @@
       //去重
       let arr = [1, 2, 3, 2, 1];
       let res1 = [...new Set(arr)];
-      let res2 = [];
+      res2 = [];
       for (let i in arr) {
         if (res2.indexOf(arr[i]) < 0) {
           res2.push(arr[i]);
         }
       }
-      let res3 = [];
+      res3 = [];
       for (let i in arr) {
         if (!res3.includes(arr[i])) {
           res3.push(arr[i]);
@@ -96,7 +96,6 @@
           this.status = "pending";
           this.msg = "";
           callback(this.resolve.bind(this), this.reject.bind(this));
-          return this;
         }
         resolve(val) {
           this.status = "fulfilled";
@@ -107,9 +106,9 @@
           this.msg = err;
         }
         then(fulfilled, rejected) {
-          if (this.status === "fulfilled") {
+          if ((this.status = "fulfilled")) {
             fulfilled(this.msg);
-          } else if (this.status === "rejected") {
+          } else if ((this.status = "rejected")) {
             rejected(this.msg);
           }
         }
@@ -145,9 +144,9 @@
           };
         });
       }
-      //PromiseAll
-      function PromiseAll(iterators) {
-        const arr = Array.from(iterators);
+      //promiseall实现
+      function promiseAll(iterators) {
+        let arr = Array.from(iterators);
         let len = arr.length;
         let resolvedCount = 0;
         let resolvedArray = new Array(len);
@@ -157,40 +156,18 @@
               (val) => {
                 resolvedCount++;
                 resolvedArray[index] = val;
-                if (resolvedCount === len) {
+                if (resolvedCount == len) {
                   resolve(resolvedArray);
                 }
               },
               (err) => {
-                reject(err);
+                console.log(err);
               }
             );
           });
         });
       }
-      function PromiseAny(iterators) {
-        const arr = Array.from(iterators);
-        let len = arr.length;
-        let rejectedCount = 0;
-        let rejectedArray = new Array(len);
-        return new Promsise((resolve, reject) => {
-          arr.forEach((promise, index) => {
-            Promise.resolve(promise).then(
-              (val) => {
-                resolve(val);
-              },
-              (err) => {
-                rejectedCount++;
-                rejectedArray[index] = err;
-                if (rejectedCount === len) {
-                  reject(rejectedArray);
-                }
-              }
-            );
-          });
-        });
-      }
-      //call
+      //call bind
       function MyCall(context, ...args) {
         if (typeof this !== "function") {
           throw new TypeError("not function");
@@ -200,13 +177,14 @@
         } else {
           context = Object(context);
         }
-        context.fn = this;
-        let res = context.fn(...args);
-        delete context.fn;
-        return res;
       }
+      context.fn = this;
+      let res = context.fn(...args);
+      delete context.fn;
+      return res;
+
       function MyBind(context, ...args) {
-        if (typeof this !== "object") {
+        if (typeof this !== "function") {
           throw new TypeError("not function");
         }
         let fn = this;
@@ -220,7 +198,7 @@
         fBound.prototype = Object.create(this.prototype);
         return fBound;
       }
-      //instanceOf案例
+      //instanceof
       function instanceOf(left, right) {
         let proto = left.__proto__;
         let prototype = right.prototype;
@@ -237,15 +215,15 @@
       function Animal(name) {
         this.name = name || "animal";
       }
-      Animal.prototype.bark = function () {
-        console.log("miao");
+      Animal.prototype.Bar = function () {
+        console.log("miao!");
       };
       function Cat(name) {
         Animal.call(this, name);
       }
       Cat.prototype = new Animal();
       Cat.prototype.constructor = Cat;
-      function inheritPrototype(cat, animal) {
+      function inheritPrototype(animal, cat) {
         let tempPrototype = Object.create(animal.prototype);
         cat.prototype = tempPrototype;
         tempPrototype.constructor = cat;

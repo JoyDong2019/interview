@@ -32,11 +32,12 @@
         }
         return res;
       }
+      //
       function deepClone(target) {
         let res = Array.isArray(target) ? [] : {};
         if (target && typeof target === "object") {
           for (key in target) {
-            if (target.hasOwnPropertyOf(key)) {
+            if (target.hasOwnPropertyOg(key)) {
               if (target[key] && typeof target[key] === "object") {
                 res[key] = deepClone(target[key]);
               } else {
@@ -59,6 +60,7 @@
           }, delay);
         };
       }
+      //
       function throttle(fun, delay) {
         let flag = true;
         return function () {
@@ -90,13 +92,12 @@
       let res4 = arr.filter((index, value, arr) => {
         arr.indexOf(value) == index;
       });
-      //promise实现
+      //promise
       class MyPromise {
         constructor(callback) {
           this.status = "pending";
           this.msg = "";
           callback(this.resolve.bind(this), this.reject.bind(this));
-          return this;
         }
         resolve(val) {
           this.status = "fulfilled";
@@ -107,9 +108,9 @@
           this.msg = err;
         }
         then(fulfilled, rejected) {
-          if (this.status === "fulfilled") {
+          if ((this.status = "fulfilled")) {
             fulfilled(this.msg);
-          } else if (this.status === "rejected") {
+          } else if ((this.status = "rejected")) {
             rejected(this.msg);
           }
         }
@@ -126,26 +127,26 @@
         }
       );
       //sendAJAX
-      function sendAJAX(url) {
+      function sendAjax(url) {
         return new Promise((resolve, reject) => {
-          let xhr = new XMLHttpRequest();
-          xhr.open("get", url, true);
-          xhr.send();
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
+          let xml = new XMLHttpRequest();
+          xml.open("get", url, true);
+          xml.send();
+          xml.onreadystatechange = function () {
+            if (xml.readyState === 4) {
               if (
-                (xhr.status >= 200 && xhr.status < 300) ||
-                xhr.status == 304
+                (xml.status >= 200 && xml.status < 300) ||
+                xml.status === 304
               ) {
-                resolve(xhr.responseText);
+                resolve(xml.responseText);
               } else {
-                reject(xhr.status);
+                reject(xml.status);
               }
             }
           };
         });
       }
-      //PromiseAll
+      //promiseAll
       function PromiseAll(iterators) {
         const arr = Array.from(iterators);
         let len = arr.length;
@@ -157,34 +158,12 @@
               (val) => {
                 resolvedCount++;
                 resolvedArray[index] = val;
-                if (resolvedCount === len) {
+                if (resolvedCount == len) {
                   resolve(resolvedArray);
                 }
               },
               (err) => {
                 reject(err);
-              }
-            );
-          });
-        });
-      }
-      function PromiseAny(iterators) {
-        const arr = Array.from(iterators);
-        let len = arr.length;
-        let rejectedCount = 0;
-        let rejectedArray = new Array(len);
-        return new Promsise((resolve, reject) => {
-          arr.forEach((promise, index) => {
-            Promise.resolve(promise).then(
-              (val) => {
-                resolve(val);
-              },
-              (err) => {
-                rejectedCount++;
-                rejectedArray[index] = err;
-                if (rejectedCount === len) {
-                  reject(rejectedArray);
-                }
               }
             );
           });
@@ -201,12 +180,13 @@
           context = Object(context);
         }
         context.fn = this;
-        let res = context.fn(...args);
+        let res = context.fn(this, args);
         delete context.fn;
         return res;
       }
+      //bind
       function MyBind(context, ...args) {
-        if (typeof this !== "object") {
+        if (typeof this !== "function") {
           throw new TypeError("not function");
         }
         let fn = this;
@@ -220,7 +200,7 @@
         fBound.prototype = Object.create(this.prototype);
         return fBound;
       }
-      //instanceOf案例
+      //instanceof
       function instanceOf(left, right) {
         let proto = left.__proto__;
         let prototype = right.prototype;
@@ -237,16 +217,16 @@
       function Animal(name) {
         this.name = name || "animal";
       }
-      Animal.prototype.bark = function () {
-        console.log("miao");
+      Animal.prototype.Bar = function () {
+        console.log("ok");
       };
       function Cat(name) {
-        Animal.call(this, name);
+        Animal.apply(this, name);
       }
       Cat.prototype = new Animal();
       Cat.prototype.constructor = Cat;
       function inheritPrototype(cat, animal) {
-        let tempPrototype = Object.create(animal.prototype);
+        let tempPrototype = animal.prototype;
         cat.prototype = tempPrototype;
         tempPrototype.constructor = cat;
       }
