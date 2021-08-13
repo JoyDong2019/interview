@@ -16,7 +16,7 @@
           if (Array.isArray(target)) {
             result = [];
             for (let i in target) {
-              result[i].push(deepClone(target[i]));
+              result.push(deepClone(target[i]));
             }
           } else if (target === null) {
             result = null;
@@ -112,7 +112,7 @@
           this.msg = "err";
         }
         then(fulfilled, rejected) {
-          if (this.status === "fulfitted") {
+          if (this.status === "fulfilled") {
             fulfilled(this.msg);
           } else if (this.status === "rejected") {
             fulfilled(this.msg);
