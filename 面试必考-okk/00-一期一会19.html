@@ -8,6 +8,7 @@
   </head>
   <body>
     <script>
+      //深复制
       function deepClone(target) {
         let res;
         if (typeof target === "object") {
@@ -36,6 +37,7 @@
         if (target && typeof target === "object") {
           for (key in target) {
             if (target.hasOwnProperty(key)) {
+              //检测一个对象是否含有特定的自身属性；该方法会忽略掉从原型链上继承到的属性
               if (target[key] && typeof target[key] === "object") {
                 res[key] = deepClone(target[key]);
               } else {
@@ -46,6 +48,25 @@
         }
         return res;
       }
+      //去重
+      let arr = [1, 2, 3, 1];
+      let res1 = [...new Set(arr)];
+      let res2 = [];
+      for (let i in arr) {
+        if (res2.indexOf(arr[i]) < 0) {
+          res2.push(arr[i]);
+        }
+      }
+      let res3 = [];
+      for (let i in arr) {
+        if (!res3.includes(arr[i])) {
+          res3.push(arr[i]);
+        }
+      }
+      let res4 = arr.filter((value, index, arr) => {
+        arr.indexOf(value) == index;
+      });
+      //防抖和节流
       function debounce(fun, delay) {
         let timer = null;
         return function (...args) {
@@ -65,16 +86,18 @@
           }
           flag = false;
           setTimeout(() => {
-            fun.apply(this, ...arguments);
+            fun.apply(this, args);
             flag = true;
           }, delay);
         };
       }
+      //promise实现
       class myPromise {
         constructor(callback) {
-          this.status = "pending";
+          this.status = pending;
           this.msg = "";
-          callback(this.resolve.bind(this), this.reject.bind(this));
+          callback(this.resolved.bind(this), this.rejected.bind(this));
+          return this;
         }
         resolve(val) {
           this.status = "fulfilled";
@@ -92,16 +115,17 @@
           }
         }
       }
+      //sendAjax
       function sendAjax(url) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, rejected) => {
           const xhr = new XMLHttpRequest();
           xhr.open("get", url, true);
           xhr.send();
           xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
+            if (xhr.readyState == 4) {
               if (
                 (xhr.status >= 200 && xhr.status < 300) ||
-                xhr.status === 304
+                xhr.status == 304
               ) {
                 resolve(xhr.responseText);
               }
@@ -111,6 +135,7 @@
           };
         });
       }
+      //promiseAll
       function promiseAll(iterators) {
         const arr = Array.from(iterators);
         let len = arr.length;
@@ -133,23 +158,27 @@
           });
         });
       }
+      //call
       function myCall(context, ...args) {
         if (typeof this !== "function") {
           throw new TypeError("not function");
         }
         if (context == null || context == undefined) {
           context = window;
-        } else context = Object(context);
+        } else {
+          context = Object(context);
+        }
         context.fn = this;
         let res = context.fn(this, ...args);
         delete context.fn;
         return res;
       }
-      Function.prototype.myBind = function (context, ...args) {
+      //bind
+      function myBind(context, ...args) {
         if (typeof this !== "function") {
           throw new TypeError("not function");
         }
-        const fn = this;
+        let fn = this;
         function fBound(...args2) {
           return fn.call(
             this instanceof fBound ? this : context,
@@ -158,19 +187,39 @@
           );
         }
         fBound.prototype = Object.create(this.prototype);
+        //返回一个新对象 带着指定的原型对象和属性
         return fBound;
-      };
+      }
+      //instanceof
+      function instanceOf(left, right) {
+        let proto = left.__proto__;
+        let prototype = right.prototype;
+        while (true) {
+          if (proto == null) {
+            return false;
+          } else if (proto == prototype) {
+            return true;
+          }
+          proto = proto.__proto__;
+        }
+      }
+      //继承
       function Animal(name) {
         this.name = name || "animal";
       }
-      Animal.prototype.bind = function () {
-        console.log("miao~");
+      Animal.prototype.Bar = function () {
+        console.log("miao");
       };
       function Cat(name) {
-        Animal.apply(this, name);
+        Animal.call(this, name);
       }
       Cat.prototype = new Animal();
       Cat.prototype.constructor = Cat;
+      function inheritPrototype(animal, cat) {
+        let tempPrototype = animal.prototype;
+        cat.prototype = tempPrototype;
+        tempPrototype.constructor = cat;
+      }
     </script>
   </body>
 </html>

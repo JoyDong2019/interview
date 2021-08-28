@@ -17,6 +17,15 @@
     <div id="footer">#footer</div>
   </body>
   <style>
+    /* 先定义好header和footer的样式，使之横向撑满。
+    在container中的三列设为浮动和相对定位(后面会用到)，center要放在最前面，footer清除浮动。
+    三列的左右两列分别定宽200px和150px，中间部分center设置100%撑满
+    这样因为浮动的关系，center会占据整个container，左右两块区域被挤下去了
+    接下来设置left的 margin-left: -100%;，让left回到上一行最左侧
+    但这会把center给遮住了，所以这时给外层的container设置 padding-left: 200px;padding-right: 150px;，给left和right空出位置
+    这时left并没有在最左侧，因为之前已经设置过相对定位，所以通过 left: -200px; 把left拉回最左侧
+    同样的，对于right区域，设置 margin-left: -150px; 把right拉回第一行
+    这时右侧空出了150px的空间，所以最后设置 right: -150px;把right区域拉到最右侧就行了。 */
     body {
       min-width: 550px;
       /* 为给定元素设置最小宽度 */
@@ -58,7 +67,7 @@
     }
     #left {
       width: 200px; /* leftContent width */
-      right: 200px; /* leftContent width */
+      left: -200px; /* leftContent width */
       margin-left: -100%;
       background: rgba(95, 179, 235, 0.972);
     }
