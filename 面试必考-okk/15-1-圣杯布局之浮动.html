@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="header">#header</div>
+    <div id="container">
+      <!-- 让中间内容先显示出来 -->
+      <div id="center" class="column">#center</div>
+      <div id="left" class="column">#left</div>
+      <div id="right" class="column">#right</div>
+    </div>
+    <div id="footer">#footer</div>
+  </body>
+  <style>
+    body {
+      min-width: 550px;
+      /* 为给定元素设置最小宽度 */
+      font-weight: bold;
+      /* 设置文本的粗细 */
+      font-size: 20px;
+      /* 设置文本的字体大小 */
+    }
+    #header,
+    #footer {
+      background: rgba(29, 27, 27, 0.726);
+      /* rgba : r 红色 ；g 绿色；b 蓝色；a 表示透明度 取值在0-1之间*/
+      /* opacity：取值在0-1之间，0表示完全透明，1表示完全不透明 */
+      /* opacity会继承父元素的opacity属性，而rgba设置的元素的后代元素不会继承不透明属性 */
+      text-align: center;
+      /* 定义行内内容如何相对块父元素对齐。text-align并不控制块元素自己的对齐，只控制它行内内容的对齐 */
+      height: 60px;
+      line-height: 60px;
+    }
+    #footer {
+      clear: both;
+    }
+    #container {
+      padding-left: 200px;
+      padding-right: 150px;
+      overflow: hidden;
+      /* overflow：当一个元素的内容太大而无法适应块级格式化上下文的时候该做什么。hidden：隐藏 */
+    }
+    #container .column {
+      position: relative;
+      float: left;
+      text-align: center;
+      height: 300px;
+      line-height: 300px;
+    }
+    #center {
+      width: 100%;
+      background: rgb(206, 201, 201);
+    }
+    #left {
+      width: 200px; /* leftContent width */
+      right: 200px; /* leftContent width */
+      margin-left: -100%;
+      background: rgba(95, 179, 235, 0.972);
+    }
+    #right {
+      width: 150px; /* rightContent width */
+      margin-left: -150px; /* rightContent width */
+      right: -150px;
+      background: rgb(231, 105, 2);
+    }
+  </style>
+</html>

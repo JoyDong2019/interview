@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 左浮动，右侧margin-left左侧盒子宽度； -->
+    <!-- 左浮动，右侧overflow:hidden -->
+    <div id="left"></div>
+    <div id="right"></div>
+    <style>
+      div {
+        height: 500px;
+      }
+      #left {
+        width: 300px;
+        background-color: yellow;
+        float: left;
+      }
+      #right {
+        background-color: #aaa;
+        /* margin-left: 300px; */
+        overflow: hidden;
+      }
+    </style>
+  </body>
+</html>

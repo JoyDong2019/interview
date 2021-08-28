@@ -13,7 +13,7 @@
         this.x = x;
         this.y = y;
       }
-      Point.prototype.tostring = function () {
+      Point.prototype.toString = function () {
         return "(" + this.x + "," + this.y + ")";
       };
       var p = new Point(1, 2);
@@ -21,31 +21,37 @@
       //ES6引入了Class(类)的概念，可以看成是一个语法糖
       class Point {
         constructor(x, y) {
+          //constructor()方法，即构造方法
           this.x = x;
           this.y = y;
           //this代表实例对象
         }
-        tostring() {
+        toString() {
           return "(" + this.x + "," + this.y + ")";
         }
       }
       typeof Point; //function 类的数据类型就是函数
       Point === Point.prototype.constructor; //true 类本身指向构造函数
       const point = new Point(); //使用时对类使用new命令
-
+      //--------------------------------------------------------------------------------------------
       //构造函数的prototype属性，类的所有方法都定义在类的prototype属性上面
       class Point {
         constructor() {}
-        tostring() {}
+        toString() {}
         toValue() {}
       }
       //与上等同
       Point.prototype = {
         constructor() {},
-        tostring() {},
+        toString() {},
         toValue() {},
       };
-
+      //---------------------------------------------------------------------------------------
+      class B {}
+      const b = new B();
+      b.constructor === B.prototype.constructor; //true
+      //b是B类的实例，它的constructor()方法就是B类原型的constructor()方法
+      //-------------------------------------------------------------------------------------
       class Point {
         constructor() {}
       }
@@ -56,10 +62,10 @@
       class Foo {
         constructor() {
           //constructor()方法默认返回实例对象(this)，但是可以返回另一个对象
-          return Object.creat(null);
+          return Object.create(null);
         }
       }
-      new Foo() instanceof Foo;
+      new Foo() instanceof Foo; //false
       //补充instanceof:用于检测构造函数的prototype属性是否出现在某个实例对象的原型链上
       //object instanceof constructor : object:某个实例对象 constructor：某个构造函数
 
@@ -112,10 +118,10 @@
       p1.__proto__ === p2.__proto__;
       //不建议通过实例的__proto__属性为类添加方法
       //可以使用Object.getPropertyOf(object)方法返回指定对象的原型，然后再为原型添加方法和属性。
-      p1.__proto__.printname = function () {
+      p1.__proto__.printName = function () {
         return "Oops";
       };
-      p1.printname(); //"Oops"
+      p1.printName(); //"Oops"
     </script>
     p1和p2的原型都是Point.prototype。可以通过实例的__proto__属性为”类“添加方法。一般不采用
     -----------------------------------------------------------------------------------
@@ -162,7 +168,7 @@
       class Foo {
         static classMethod() {
           this.classMethod();
-          //如果静态方法中包含this关键字，这个this指的是类，而不是实例。
+          /* 如果静态方法中包含this关键字，这个this指的是类，而不是实例。 */
           return "hello";
         }
       }
@@ -197,6 +203,22 @@
       Bar.classMethod(); // 'hello'
     </script>
     ----------------------------------------------------------------------------------------
+    实例属性的新写法
+    实例属性可以定义在类的最顶层，且不需要在实例属性前面加上this
+    <script>
+      class IncreasingCounter {
+        //实例属性写在最顶层且不需要加上this关键字
+        _count = 0;
+        get value() {
+          console.log("Getting the current value!");
+          return this._count;
+        }
+        increment() {
+          this._count++;
+        }
+      }
+    </script>
+    ----------------------------------------------------------------------------------------
     静态属性
     Class本身的属性，即Class.propName,而不是定义在实例对象(this)上的属性。
     <script>
@@ -227,6 +249,23 @@
         // ...
       }
     </script>
+    私有属性,#a,#b是私有属性；#sum是私有方法。
+    <script>
+      class Foo {
+        #a;
+        #b;
+        constructor(a, b) {
+          this.#a = a;
+          this.#b = b;
+        }
+        #sum() {
+          return this.#a + this.#b;
+        }
+        printSum() {
+          console.log(this.#sum());
+        }
+      }
+    </script>
     ----------------------------------------------------------------------------------------
     new.target属性
     new是从构造函数生成实例对象的命令。ES6为new命令引入了一个new.target属性，该属性一般用在构造函数之中，返回new命令作用于的那个构造函数。如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此这个属性可以用来确定构造函数是怎么调用的。
@@ -250,6 +289,39 @@
 
       var person = new Person("张三"); // 正确
       var notAPerson = Person.call(person, "张三"); // 报错
+    </script>
+    补充：可枚举属性和不可枚举属性
+    可枚举和不可枚举是由属性的enumerable值决定的。可枚举性决定这个属性能否被for...in查找遍历到。Object对象的propertyIsEnumerable()方法可以判断此对象是否包含某个属性，并且这个属性是否可枚举。需要注意的是：如果判断的属性存在于Object对象的原型内，不管它是否可枚举都会返回false。
+    ------------------------------------------------------------------------------------------
+    1、JS中基本包装类型的原型属性都是不可枚举的，如Object、Array、Number等。
+    2、类的内部定义的所有方法都是不可枚举的
+    ------------------------------------------------------------------------------------------
+    枚举方法的区别：
+    1.for…in循环可以枚举(遍历)出对象本身具有的属性，通过Object.defineProperty()方法加的可枚举属性，或者通过原型对象绑定的可以枚举属性(即继承的属性)。
+    2.Object.keys()方法可以枚举对象本身的属性和通过Object.defineProperty()添加的可枚举属性。
+    3.JSON.stringify()方法只能序列化本身的属性和通过Object.defineProperty()添加的可枚举属性为JSON对象。
+    -----------------------------------------------------------------------------------------
+    设置可枚举属性 Object.defineProperty() 1.Object.defineProperty(obj, prop,
+    descriptor)方法有三那个参数 第一个：目标对象 第二个：目标属性，字符串
+    第三个：对目标属性的行为，放在对象里
+    2.enumerable为true时表示可枚举，enumerable为false表示不可枚举；
+    3.开发者自己定义的对象person中的所有属性默认都是可枚举的；
+    <script>
+      var person = {
+        name: "xiao",
+        age: "18",
+        sex: "boy",
+      };
+      Object.defineProperty(person, "age", {
+        enumerable: true, //可以被枚举
+      });
+      Object.defineProperty(person, "sex", {
+        enumerable: false, //不可以被枚举
+      });
+      for (var k in person) {
+        console.log(person[k]); //18,xiao
+        //开发者自己定义的对象person的所有属性都是默认可枚举的
+      }
     </script>
   </body>
 </html>
