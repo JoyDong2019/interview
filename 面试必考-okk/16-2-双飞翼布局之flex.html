@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="content">
+      <div class="main">
+        <div class="main-inner">main</div>
+      </div>
+      <div class="left">left</div>
+      <div class="right">right</div>
+    </div>
+  </body>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    .content {
+      overflow: hidden;
+      display: flex;
+      flex: 1;
+    }
+
+    .main {
+      flex: 1;
+      height: 100px;
+      border: 1px solid red;
+    }
+    .left {
+      /* flex: 0 0 100px; */
+      width: 100px;
+      order: -1;
+      height: 100px;
+      border: 1px solid #000;
+    }
+    .right {
+      /* flex: 0 0 100px; */
+      width: 100px;
+      height: 100px;
+      border: 1px solid #000;
+    }
+  </style>
+</html>

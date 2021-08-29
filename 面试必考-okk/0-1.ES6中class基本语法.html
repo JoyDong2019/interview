@@ -323,8 +323,9 @@
     ------------------------------------------------------------------------------------------
     枚举方法的区别：
     1.for…in循环可以枚举(遍历)出对象本身具有的属性，通过Object.defineProperty()方法加的可枚举属性，或者通过原型对象绑定的可以枚举属性(即继承的属性)。
-    2.Object.keys()方法可以枚举对象本身的属性和通过Object.defineProperty()添加的可枚举属性。
+    2.Object.keys()方法可以枚举对象本身的属性和通过Object.defineProperty()添加的可枚举属性。Object.keys()会返回一个由一个给定对象的自身可枚举属性组成的数组
     3.JSON.stringify()方法只能序列化本身的属性和通过Object.defineProperty()添加的可枚举属性为JSON对象。
+    4.Object.getOwnPropertyNames()返回一个由指定对象的所有自身属性的属性名(包括不可枚举属性但不包括symbol值作为名称的属性)组成的数组。
     -----------------------------------------------------------------------------------------
     设置可枚举属性 Object.defineProperty() 1.Object.defineProperty(obj, prop,
     descriptor)方法有三那个参数 第一个：目标对象 第二个：目标属性，字符串

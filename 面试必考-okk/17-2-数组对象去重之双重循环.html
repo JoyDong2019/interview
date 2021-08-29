@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var arr2 = [
+        { name: "a", id: 1 },
+        { name: "a", id: 2 },
+        { name: "b", id: 3 },
+        { name: "c", id: 4 },
+        { name: "c", id: 6 },
+        { name: "b", id: 6 },
+        { name: "d", id: 7 },
+      ];
+      var temp = [];
+      function deWeightTwo() {
+        arr2.forEach(function (a) {
+          var check = temp.every(function (b) {
+            //Array.prototype.every()方法测试一个数组内的所有元素是否都能通过某个指定函数的测试。它返回一个布尔值。
+            return a.name !== b.name;
+          });
+          check ? temp.push(a) : "";
+        });
+        return temp;
+      }
+      var newArr2 = deWeightTwo();
+      console.log("%c%s", "color:red;", "方法二：es5,newArr2", newArr2);
+    </script>
+  </body>
+</html>

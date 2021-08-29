@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var arr3 = [
+        { name: "a", id: 1 },
+        { name: "a", id: 2 },
+        { name: "b", id: 3 },
+        { name: "c", id: 4 },
+        { name: "c", id: 6 },
+        { name: "b", id: 6 },
+        { name: "d", id: 7 },
+      ];
+      let deWeightThree = () => {
+        let map = new Map();
+        for (let item of arr3) {
+          if (!map.has(item.name)) {
+            map.set(item.name, item);
+          }
+        }
+        return [...map.values()];
+      };
+      let newArr3 = deWeightThree();
+      console.log("%c%s", "color:red;", "方法三：es6,newArr3", newArr3);
+    </script>
+  </body>
+</html>

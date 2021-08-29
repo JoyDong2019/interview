@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <!-- 圣杯布局 -->
+  <!-- <body>
+    <div class="header"></div>
+    <div class="container">
+      <div class="center"></div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+    <div class="footer"></div>
+  </body>
+  <style>
+    .header,
+    .footer {
+      height: 60px;
+    }
+    .header {
+      background-color: blue;
+    }
+    .footer {
+      background-color: yellow;
+      clear: both;
+    }
+    .container {
+      padding-left: 200px;
+      padding-right: 150px;
+    }
+    .center,
+    .left,
+    .right {
+      float: left;
+      position: relative;
+      height: 300px;
+    }
+    .center {
+      width: 100%;
+      background-color: pink;
+    }
+    .left {
+      width: 200px;
+      margin-left: -100%;
+      left: -200px;
+      background-color: red;
+    }
+    .right {
+      width: 150px;
+      margin-left: -150px;
+      right: -150px;
+      background-color: green;
+    }
+  </style> -->
+  <body>
+    <div class="header"></div>
+    <div class="container">
+      <div class="center">
+        <div class="content"></div>
+      </div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+    <div class="footer"></div>
+  </body>
+  <style>
+    .header,
+    .footer {
+      height: 60px;
+      background-color: pink;
+    }
+    .container {
+      overflow: hidden;
+    }
+    .content {
+      margin: 0 150px 0 200px;
+    }
+    .center,
+    .right,
+    .left {
+      float: left;
+    }
+    .center {
+      width: 100%;
+      background-color: red;
+      height: 300px;
+    }
+    .left {
+      width: 200px;
+      margin-left: -100%;
+      background-color: blue;
+      height: 300px;
+    }
+    .right {
+      width: 150px;
+      margin-left: -150px;
+      background-color: green;
+      height: 300px;
+    }
+  </style>
+</html>
