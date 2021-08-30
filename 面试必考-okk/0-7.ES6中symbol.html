@@ -129,4 +129,28 @@
     obj[Symbol.isConcatSpreadable] = true;
     ["a", "b"].concat(obj, "e"); // ['a', 'b', 'c', 'd', 'e']
   </script>
+  3、Symbol.iterator()
+  ES6中与生俱来具有Iterator接口：数组、类数组对象、Map和Set结构。
+  给一个对象部署iterator接口，即对该对象做一种线性转换。对象的Symbol.iterator属性，指向该对象的默认遍历器方法。
+  <script>
+    let obj = {
+      data: ["hello", "world"],
+      [Symbol.iterator]() {
+        const self = this;
+        let index = 0;
+        return {
+          next() {
+            if (index < self.data.length) {
+              return {
+                value: self.data[index++],
+                done: false,
+              };
+            } else {
+              return { value: undefined, done: true };
+            }
+          },
+        };
+      },
+    };
+  </script>
 </html>
